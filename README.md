@@ -79,5 +79,21 @@ NAME         TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                   
 pebble-svc   NodePort   172.30.250.95   <none>        30100:30100/TCP,30200:30200/TCP,30501:30501/TCP,30502:30502/TCP   2m35s
 ```
 
-use the Cluster-IP url http://pebble-svc.pebble.svc.cluster.local:30200
+10. You should able to use pebble within the cluster.
 
+```
+❯ curl https://pebble-svc.pebble.svc.cluster.local:3010/dir -k   
+{
+   "keyChange": "https://pebble-svc.pebble.svc.cluster.local:30100/rollover-account-key",
+   "meta": {
+      "externalAccountRequired": false,
+      "termsOfService": "data:text/plain,Do%20what%20thou%20wilt"
+   },
+   "newAccount": "https://pebble-svc.pebble.svc.cluster.local:30100/sign-me-up",
+   "newNonce": "https://pebble-svc.pebble.svc.cluster.local:30100/nonce-plz",
+   "newOrder": "https://pebble-svc.pebble.svc.cluster.local:30100/order-plz",
+   "revokeCert": "https://pebble-svc.pebble.svc.cluster.local:30100/revoke-cert"
+}
+```
+
+Note, the ports are different.
