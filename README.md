@@ -82,7 +82,7 @@ pebble-svc   NodePort   172.30.250.95   <none>        30100:30100/TCP,30200:3020
 10. You should able to use pebble within the cluster.
 
 ```
-❯ curl https://pebble-svc.pebble.svc.cluster.local:3010/dir -k   
+❯ curl https://pebble-svc.pebble.svc.cluster.local:30100/dir -k   
 {
    "keyChange": "https://pebble-svc.pebble.svc.cluster.local:30100/rollover-account-key",
    "meta": {
