@@ -1,0 +1,85 @@
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pebble
+  labels:
+    name: pebble
+  namespace: pebble
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: pebble
+  template:
+    metadata:
+      labels:
+        name: pebble
+    spec:
+      containers:
+        - name: pebble
+          image: quay.io/repository/powercloud/pebble-tool:pebble-ppc64le
+          imagePullPolicy: Always
+          command: [ "/usr/bin/pebble" ]
+          args: [ "-config", "/pebble-config.json" ]
+          resources:
+            limits:
+              cpu: 300m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          ports:
+            - containerPort: 14000
+            - containerPort: 15000
+          securityContext:
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+            readOnlyRootFilesystem: true
+          volumeMounts:
+            - name: pebble-vol
+              mountPath: /tmp
+            - name: pebble-config
+              mountPath: "/pebble-config.json"
+              readOnly: true
+      volumeMounts:
+      - name: config
+        mountPath: "/config"
+        readOnly: true
+      volumes:
+        - name: pebble-vol
+          emptyDir:
+            medium: Memory
+        - name: config
+          configMap:
+            name: pebble-config
+            items:
+            - key: "pebble-config.json"
+              path: "pebble-config.json"
+      nodeSelector:
+        node.openshift.io/os_id: rhcos
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pebble-svc
+  labels:
+    app: pebble
+spec:
+  type: NodePort
+  ports:
+  - port: 14000
+    name: pebble4
+    protocol: TCP
+    targetPort: 14000
+    nodePort: 14000
+  - port: 15000
+    name: pebble5
+    protocol: TCP
+    targetPort: 15000
+    nodePort: 15000
+  selector:
+    app: pebble
