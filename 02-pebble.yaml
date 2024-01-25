@@ -22,7 +22,7 @@ spec:
           image: quay.io/powercloud/pebble-tool:pebble
           imagePullPolicy: Always
           command: [ "/usr/bin/pebble" ]
-          args: [ "-config", "/pebble-config.json" ]
+          args: [ "-config", "/config/pebble-config.json" ]
           resources:
             limits:
               cpu: 300m
@@ -31,8 +31,10 @@ spec:
               cpu: 100m
               memory: 200Mi
           ports:
-            - containerPort: 14000
-            - containerPort: 15000
+            - containerPort: 30100
+            - containerPort: 30200
+            - containerPort: 30501
+            - containerPort: 30502
           securityContext:
             runAsNonRoot: true
             capabilities:
@@ -43,12 +45,11 @@ spec:
             - name: pebble-vol
               mountPath: /tmp
             - name: pebble-config
-              mountPath: "/pebble-config.json"
+              mountPath: "/config"
               readOnly: true
-      volumeMounts:
-      - name: config
-        mountPath: "/config"
-        readOnly: true
+            - name: pebble-tls
+              mountPath: "/tls"
+              readOnly: true
       volumes:
         - name: pebble-vol
           emptyDir:
@@ -59,8 +60,12 @@ spec:
             items:
             - key: "pebble-config.json"
               path: "pebble-config.json"
+        - name: pebble-tls
+          secret: 
+            secretName: pebble-tls
       nodeSelector:
         node.openshift.io/os_id: rhcos
+        kubernetes.io/arch: ppc64le
 ---
 apiVersion: v1
 kind: Service

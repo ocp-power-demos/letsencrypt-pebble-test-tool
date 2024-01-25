@@ -9,8 +9,8 @@ data:
       "pebble": {
         "listenAddress": "0.0.0.0:30100",
         "managementListenAddress": "0.0.0.0:30200",
-        "certificate": "test/certs/localhost/cert.pem",
-        "privateKey": "test/certs/localhost/key.pem",
+        "certificate": "/tls/tls.crt",
+        "privateKey": "/tls/tls.key",
         "httpPort": 30501,
         "tlsPort": 30502,
         "ocspResponderURL": "",
