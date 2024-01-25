@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: pebble
-          image: quay.io/repository/powercloud/pebble-tool:pebble-ppc64le
+          image: quay.io/powercloud/pebble-tool:pebble
           imagePullPolicy: Always
           command: [ "/usr/bin/pebble" ]
           args: [ "-config", "/pebble-config.json" ]
@@ -53,7 +53,7 @@ spec:
         - name: pebble-vol
           emptyDir:
             medium: Memory
-        - name: config
+        - name: pebble-config
           configMap:
             name: pebble-config
             items:
@@ -71,15 +71,25 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 14000
+  - port: 30100
     name: pebble4
     protocol: TCP
-    targetPort: 14000
-    nodePort: 14000
-  - port: 15000
+    targetPort: 30100
+    nodePort: 30100
+  - port: 30200
     name: pebble5
     protocol: TCP
-    targetPort: 15000
-    nodePort: 15000
+    targetPort: 30200
+    nodePort: 30200
+  - port: 30501
+    name: pebblehttp
+    protocol: TCP
+    targetPort: 30501
+    nodePort: 30501
+  - port: 30502
+    name: pebblehttps
+    protocol: TCP
+    targetPort: 30502
+    nodePort: 30502
   selector:
     app: pebble
