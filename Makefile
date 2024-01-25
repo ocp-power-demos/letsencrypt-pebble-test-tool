@@ -3,7 +3,7 @@ ARCH ?= ppc64le
 APP ?= pebble
 
 # If absent, registry defaults
-REGISTRY ?= quay.io/repository/powercloud/pebble-tool
+REGISTRY ?= quay.io/powercloud/pebble-tool
 
 verify-environment:
 	+@echo "REGISTRY: ${REGISTRY}"

@@ -2,6 +2,8 @@ FROM registry.access.redhat.com/ubi9/go-toolset:1.20 as builder
 
 ENV CGO_ENABLED=0
 
+USER 0
+
 RUN mkdir -p /go/src/github.com/letsencrypt/ \
     && cd /go/src/github.com/letsencrypt/ \
     && git clone https://github.com/letsencrypt/pebble
