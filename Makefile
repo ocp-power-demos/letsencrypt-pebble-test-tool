@@ -33,11 +33,12 @@ push-ml: verify-environment pull-deps
 	+@echo "Remove existing manifest listed - ${APP}"
 	+@podman manifest rm ${REGISTRY}:pebble|| true
 	+@echo "Create new ML - ${APP}"
-	+@podman manifest create ${REGISTRY}:pebble \
-		${REGISTRY}:${APP}-amd64 \
-		${REGISTRY}:${APP}-s390x \
-		${ARM_REGISTRY}:${APP}-arm64 \
-		${REGISTRY}:${APP}-ppc64le
+	+@podman manifest create ${REGISTRY}:pebble
+	+@podman manifest add ${REGISTRY}:pebble ${REGISTRY}:${APP}-amd64
+	+@podman manifest add ${REGISTRY}:pebble ${REGISTRY}:${APP}-s390x
+	+@podman manifest add ${REGISTRY}:pebble ${REGISTRY}:${APP}-arm64
+	+@podman manifest add ${REGISTRY}:pebble ${REGISTRY}:${APP}-ppc64le
 	+@echo "Pushing image - ${APP}"
 	+@podman manifest push ${REGISTRY}:pebble ${REGISTRY}:pebble
+	+@echo "Done Pushing ML image - ${APP}"
 .PHONY: push-ml
