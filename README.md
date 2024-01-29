@@ -27,18 +27,16 @@ oc get secrets/signing-key -n openshift-service-ca \
      | base64 --decode > tls.crt
 ```
 
-3. Extract the tls.key
+3. Create the tls secret and key
 
 ```
-oc get secrets/signing-key -n openshift-service-ca \
-     -o template='{{index .data "tls.key"}}' \
-     | base64 --decode > tls.key
+❯ openssl req -x509 -newkey rsa:4096 -keyout pebble.key -out pebble.crt -sha256 -days 3650 -nodes -subj "/C=US/ST=MA/L=Boston/O=IBM/OU=PowerSystems/CN=pebble-svc.pebble.svc.cluster.local"
 ```
 
 4. Create the namespace key/crt
 
 ```
-❯ oc create secret tls pebble-tls --key="tls.key" --cert="tls.crt"
+❯ oc create secret tls pebble-tls --key="pebble.key" --cert="pebble.crt"
 secret/pebble-tls created
 ```
 
