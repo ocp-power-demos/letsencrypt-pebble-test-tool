@@ -95,3 +95,22 @@ pebble-svc   NodePort   172.30.250.95   <none>        30100:30100/TCP,30200:3020
 ```
 
 Note, the ports are different.
+
+11. Then use the following to generate the ClusterIssuer
+
+```
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: example-issuer
+spec:
+  acme:
+    server: https://pebble-svc.pebble.svc.cluster.local:30100/dir
+    skipTLSVerify: true
+    privateKeySecretRef:
+      name: example-issuer-account-key
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: nginx
+```
