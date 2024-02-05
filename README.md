@@ -112,5 +112,5 @@ spec:
     solvers:
     - http01:
         ingress:
-          ingressClassName: nginx
+          ingressClassName: openshift-default
 ```
