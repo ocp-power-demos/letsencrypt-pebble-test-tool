@@ -19,6 +19,8 @@ The image is available at [quay.io/powercloud/pebble-tool:pebble](https://quay.i
 dnf install -y make git podman
 ```
 
+### Setup the HTTP01 Issuer
+
 2. Extract a tls.crt
 
 ```
