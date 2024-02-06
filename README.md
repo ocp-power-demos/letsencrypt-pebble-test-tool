@@ -102,13 +102,13 @@ Note, the ports are different.
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: example-issuer
+  name: pebble-http01
 spec:
   acme:
     server: https://pebble-svc.pebble.svc.cluster.local:30100/dir
     skipTLSVerify: true
     privateKeySecretRef:
-      name: example-issuer-account-key
+      name: pebble-http01-account-key
     solvers:
     - http01:
         ingress:
