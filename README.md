@@ -19,14 +19,32 @@ The image is available at [quay.io/powercloud/pebble-tool:pebble](https://quay.i
 dnf install -y make git podman
 ```
 
-### Setup the HTTP01 Issuer
-
-2. Extract a tls.crt
+2. Build the image
 
 ```
-oc get secrets/signing-key -n openshift-service-ca \
-     -o template='{{index .data "tls.crt"}}' \
-     | base64 --decode > tls.crt
+make build
+```
+
+3. Push the image
+
+```
+make push
+```
+
+### Setup the HTTP01 Issuer
+
+1. Setup the namespace
+
+```
+❯ oc apply -f 00-ns.yaml 
+project.project.openshift.io/pebble created
+```
+
+2. Switch Project
+
+```
+❯ oc project pebble
+Now using project "pebble" on server "https://api.XYZ.ocp-multiarch.xyz:6443".
 ```
 
 3. Create the tls secret and key
@@ -40,20 +58,6 @@ oc get secrets/signing-key -n openshift-service-ca \
 ```
 ❯ oc create secret tls pebble-tls --key="pebble.key" --cert="pebble.crt"
 secret/pebble-tls created
-```
-
-5. Setup the namespace
-
-```
-❯ oc apply -f 00-ns.yaml 
-project.project.openshift.io/pebble created
-```
-
-6. Switch Project
-
-```
-❯ oc project pebble
-Now using project "pebble" on server "https://api.XYZ.ocp-multiarch.xyz:6443".
 ```
 
 7. Setup the ConfigMap
@@ -82,7 +86,7 @@ pebble-svc   NodePort   172.30.250.95   <none>        30100:30100/TCP,30200:3020
 10. You should able to use pebble within the cluster.
 
 ```
-❯ curl https://pebble-svc.pebble.svc.cluster.local:30100/dir -k   
+❯ curl https://pebble-svc.pebble.svc.cluster.local:30100/dir -k
 {
    "keyChange": "https://pebble-svc.pebble.svc.cluster.local:30100/rollover-account-key",
    "meta": {
