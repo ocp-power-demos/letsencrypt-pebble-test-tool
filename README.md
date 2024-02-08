@@ -53,16 +53,6 @@ Now using project "pebble" on server "https://api.XYZ.ocp-multiarch.xyz:6443".
 ❯ openssl req -x509 -newkey rsa:4096 -keyout pebble.key -out pebble.crt -sha256 -days 3650 -nodes -subj "/C=US/ST=MA/L=Boston/O=IBM/OU=PowerSystems/CN=pebble-svc.pebble.svc.cluster.local"
 ```
 
-```
-oc get secrets/signing-key -n openshift-service-ca \
-     -o template='{{index .data "tls.crt"}}' \
-     | base64 --decode > tls.crt
-```
-
-oc get secrets/signing-key -n openshift-service-ca \
-     -o template='{{index .data "tls.key"}}' \
-     | base64 --decode > tls.key
-
 4. Create the namespace key/crt
 
 ```
@@ -143,14 +133,14 @@ cat << EOF | oc apply -f -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert-01
+  name: cert-03d
 spec:
   dnsNames:
-  - a01.apps.numt-ocp-9c91.ocp.local
+  - d03.apps.numt-ocp-9c91.ocp.local
   issuerRef:
     kind: ClusterIssuer
     name: pebble-http01
-  secretName: cert-01-secret
+  secretName: cert-03-secretd
 EOF
 ```
 
