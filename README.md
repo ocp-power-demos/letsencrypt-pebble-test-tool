@@ -95,6 +95,15 @@ pebble-svc   NodePort   172.30.250.95   <none>        30100:30100/TCP,30200:3020
 
 10. You should able to use pebble within the cluster.
 
+a. start the shell
+
+```
+❯ oc rsh deployment/pebble
+sh-5.1$
+```
+
+b. check the cluster dir. 
+
 ```
 ❯ curl https://pebble-svc.pebble.svc.cluster.local:30100/dir -k
 {
@@ -115,18 +124,45 @@ Note, the ports are different.
 11. Then use the following to generate the ClusterIssuer
 
 ```
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: pebble-http01
-spec:
-  acme:
-    server: https://pebble-svc.pebble.svc.cluster.local:30100/dir
-    skipTLSVerify: true
-    privateKeySecretRef:
-      name: pebble-http01-account-key
-    solvers:
-    - http01:
-        ingress:
-          ingressClassName: openshift-default
+❯ oc apply -f 03-clusterissuer.yaml
+clusterissuer.cert-manager.io/pebble-http01 created
 ```
+
+12. You should see the `ClusterIssuer` as `READY=True`.
+
+```
+❯ oc get clusterissuer
+NAME            READY   AGE
+pebble-http01   True    102s
+```
+
+13. Create the `Certificate`
+
+```
+cat << EOF | oc apply -f -
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-01
+spec:
+  dnsNames:
+  - a01.apps.numt-ocp-9c91.ocp.local
+  issuerRef:
+    kind: ClusterIssuer
+    name: pebble-http01
+  secretName: cert-01-secret
+EOF
+```
+
+14. Check the `Certificate,Order,Route` and optionally the Challenge and CertificateRequest.
+
+```
+❯ oc get certificate,order
+NAME                                  READY   SECRET           AGE
+certificate.cert-manager.io/cert-01   False   cert-01-secret   25s
+
+NAME                                              STATE     AGE
+order.acme.cert-manager.io/cert-01-1-2002363495   pending   25s
+```
+
+Once the Order is complete, you will have your Certificate Ready=True.

@@ -23,6 +23,9 @@ spec:
           imagePullPolicy: Always
           command: [ "/usr/bin/pebble" ]
           args: [ "-config", "/config/pebble-config.json" ]
+          env:
+          - name: PEBBLE_VA_NOSLEEP
+            value: "1"
           resources:
             limits:
               cpu: 300m
