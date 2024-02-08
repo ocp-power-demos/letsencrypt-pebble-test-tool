@@ -156,3 +156,21 @@ order.acme.cert-manager.io/cert-01-1-2002363495   pending   25s
 ```
 
 Once the Order is complete, you will have your Certificate Ready=True.
+
+### Troubleshooting
+
+You can grab the logging for Pebble.
+
+```
+❯ oc logs -n pebble -l name=pebble
+Pebble 2024/02/08 16:40:38 Pulled a task from the Tasks queue: &va.vaTask{Identifier:acme.Identifier{Type:"dns", Value:"e03.XT.local"}, Challenge:(*core.Challenge)(0xc0004c3cc0), Account:(*core.Account)(0xc0004abec0)}
+Pebble 2024/02/08 16:40:38 Starting 3 validations.
+Pebble 2024/02/08 16:40:38 Attempting to validate w/ HTTP: http://e03.XT.local:30501/.well-known/acme-challenge/XT-4
+Pebble 2024/02/08 16:40:38 Attempting to validate w/ HTTP: http://e03.XT.local:30501/.well-known/acme-challenge/XT-4
+Pebble 2024/02/08 16:40:38 Attempting to validate w/ HTTP: http://e03.XT.local:30501/.well-known/acme-challenge/XT-4
+Pebble 2024/02/08 16:40:38 POST /authZ/ -> calling handler()
+Pebble 2024/02/08 16:40:38 authz XT set INVALID by completed challenge XT
+Pebble 2024/02/08 16:40:38 order XT set INVALID by invalid authz XT
+Pebble 2024/02/08 16:40:41 POST /authZ/ -> calling handler()
+Pebble 2024/02/08 16:40:41 POST /my-order/ -> calling handler()
+```
