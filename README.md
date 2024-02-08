@@ -126,21 +126,21 @@ NAME            READY   AGE
 pebble-http01   True    102s
 ```
 
-13. Create the `Certificate`
+13. Create the `Certificate`, you will have to update your dnsNames entry to match a dnsName hosted under `apps.*`.
 
 ```
 cat << EOF | oc apply -f -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert-03d
+  name: cert-03e
 spec:
   dnsNames:
-  - d03.apps.numt-ocp-9c91.ocp.local
+  - e03.apps.numt-ocp-9c91.ocp.local
   issuerRef:
     kind: ClusterIssuer
     name: pebble-http01
-  secretName: cert-03-secretd
+  secretName: cert-03-secrete
 EOF
 ```
 
