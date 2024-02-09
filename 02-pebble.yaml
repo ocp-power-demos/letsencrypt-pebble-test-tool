@@ -26,6 +26,10 @@ spec:
           env:
           - name: PEBBLE_VA_NOSLEEP
             value: "1"
+          - name: PEBBLE_AUTHZREUSE
+            value: "100"
+          - name: PEBBLE_VA_ALWAYS_VALID
+            value: "0"
           resources:
             limits:
               cpu: 300m
@@ -36,7 +40,7 @@ spec:
           ports:
             - containerPort: 30100
             - containerPort: 30200
-            - containerPort: 30501
+            - containerPort: 80
             - containerPort: 30502
           securityContext:
             runAsNonRoot: true
@@ -89,11 +93,10 @@ spec:
     protocol: TCP
     targetPort: 30200
     nodePort: 30200
-  - port: 30501
+  - port: 80
     name: pebblehttp
     protocol: TCP
-    targetPort: 30501
-    nodePort: 30501
+    targetPort: 80
   - port: 30502
     name: pebblehttps
     protocol: TCP

@@ -4,11 +4,13 @@ metadata:
   name: pebble-http01
 spec:
   acme:
+    email: "demo@ocp.local"
     server: https://pebble-svc.pebble.svc.cluster.local:30100/dir
     skipTLSVerify: true
+    preferredChain: ""
     privateKeySecretRef:
       name: pebble-http01-account-key
     solvers:
-    - http01:
-        ingress:
-          class: openshift-default
+      - http01:
+          ingress:
+            class: openshift-default

@@ -11,7 +11,7 @@ data:
         "managementListenAddress": "0.0.0.0:30200",
         "certificate": "/tls/tls.crt",
         "privateKey": "/tls/tls.key",
-        "httpPort": 30501,
+        "httpPort": 80,
         "tlsPort": 30502,
         "ocspResponderURL": "",
         "externalAccountBindingRequired": false,

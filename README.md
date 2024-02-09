@@ -174,3 +174,20 @@ Pebble 2024/02/08 16:40:38 order XT set INVALID by invalid authz XT
 Pebble 2024/02/08 16:40:41 POST /authZ/ -> calling handler()
 Pebble 2024/02/08 16:40:41 POST /my-order/ -> calling handler()
 ```
+
+You can check the status of the certificate using: 
+
+```
+❯ oc get certificate,route,challenge,order,certificaterequest
+NAME                                  READY   SECRET           AGE
+certificate.cert-manager.io/cert-01   True    cert-01-secret   3m24s
+
+NAME                                 HOST/PORT                                       PATH   SERVICES     PORT          TERMINATION        WILDCARD
+route.route.openshift.io/pebble-rt   pebble-rt-pebble.apps.X.ocp.local          pebble-svc   pebblehttps   passthrough/None   None
+
+NAME                                              STATE   AGE
+order.acme.cert-manager.io/cert-01-1-2068076300   valid   25s
+
+NAME                                           APPROVED   DENIED   READY   ISSUER          REQUESTOR                                         AGE
+certificaterequest.cert-manager.io/cert-01-1   True                True    pebble-test-x   system:serviceaccount:cert-manager:cert-manager   25s
+```

@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-01
+  namespace: pebble
+spec:
+  isCA: false
+  commonName: 'e0yz1.xb.apps.X.local'
+  secretName: cert-01yz-secret
+  dnsNames:
+  - "e0yz1.xb.apps.X.local"
+  issuerRef:
+    name: pebble-http01
+    kind: ClusterIssuer
