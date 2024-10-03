@@ -80,6 +80,7 @@ metadata:
   name: pebble-svc
   labels:
     name: pebble
+  namespace: pebble
 spec:
   type: NodePort
   ports:
